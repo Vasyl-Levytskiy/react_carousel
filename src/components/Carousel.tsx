@@ -26,29 +26,41 @@ const Carousel: React.FC<CarouselProps> = ({
 
   const handleNext = () => {
     setCurrentIndex(prev => {
-      if (infinite) {
-        if (prev + step > maxIndex) {
+      const nextIndex = prev + step;
+
+      if (!infinite) {
+        return Math.min(nextIndex, maxIndex);
+      }
+
+      if (nextIndex > maxIndex) {
+        if (prev === maxIndex) {
           return 0;
         }
 
-        return prev + step;
+        return maxIndex;
       }
 
-      return Math.min(prev + step, maxIndex);
+      return nextIndex;
     });
   };
 
   const handlePrev = () => {
     setCurrentIndex(prev => {
-      if (infinite) {
-        if (prev - step < 0) {
+      const prevIndex = prev - step;
+
+      if (!infinite) {
+        return Math.max(prevIndex, 0);
+      }
+
+      if (prevIndex < 0) {
+        if (prev === 0) {
           return maxIndex;
         }
 
-        return prev - step;
+        return 0;
       }
 
-      return Math.max(prev - step, 0);
+      return prevIndex;
     });
   };
 
